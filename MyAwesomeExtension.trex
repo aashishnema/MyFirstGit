@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest manifest-version="0.1" xmlns="http://www.tableau.com/xml/extension_manifest">
+  <dashboard-extension id="com.tableau.extensions.myawesomeextension" extension-version="0.7.0">
+    <default-locale>Custom Extension!</default-locale>
+    <name resource-id="name"/>
+    <description>My awesome extension that does awesome things!</description>
+    <author name="Ashish Nema" email="AshishKumar.Nema@brinker.com" organization="Brinker" website="https://brinker.com/"/>
+    <min-api-version>0.9</min-api-version>
+    <source-location>
+      <url>https://custom-integration-to-tableau.glitch.me/</url>
+    </source-location>
+    <icon></icon>
+  </dashboard-extension>
+  <resources>
+    <resource id="name">
+      <text locale="en_US">Custom Extension!</text>
+    </resource>
+  </resources>
+</manifest>
