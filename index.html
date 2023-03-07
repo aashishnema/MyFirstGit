@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Welcome my Tableau Custom Extension Page.</title>
+
+    <!-- Latest compiled and minified CSS -->
+
+    <link
+
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+
+      rel="stylesheet"
+
+    />
+
+    <link
+
+      rel="stylesheet"
+
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+
+    />
+
+    <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
+
+    <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+
+    <script src="./tableau.extensions.1.latest.js"></script>
+
+  </head>
+
+  <body style="font-family: 'Poppins', sans-serif">
+
+    <div class="container">
+
+      <h3 class="bold">Custom Extension for Tableau Server.</h3>
+
+      <p>
+
+        Click the button to merge PDF
+
+        <code>pdf-lib</code>
+
+      </p>
+
+      <button onclick="MergePDFs()" class="btn btn-primary">Merge</button>
+
+      <div>
+
+        <p class="small" style="padding: 10px 0px">
+
+          (Your browser will download the resulting file)
+
+        </p>
+
+      </div>
+
+    </div>
+
+  </body>
+
+
+
+  <script>
+
+    const { PDFDocument } = PDFLib;
+
+
+
+    async function MergePDFs() {
+
+      // Fetch first existing PDF document
+
+      const url1 = "https://cdn.glitch.global/d4a69817-dc25-44d7-bdaf-5cfabb92a180/PDF-1.pdf?v=1678104579824"; // Replace with Actual Brinker Dashboards URL
+
+      //const url1 = "https://pdf-lib.js.org/assets/with_update_sections.pdf";
+
+      const firstDonorPdfBytes = await fetch(url1).then((res) =>
+
+        res.arrayBuffer()
+
+      );
+
+
+
+      // Fetch second existing PDF document
+
+      const url2 = "https://cdn.glitch.global/d4a69817-dc25-44d7-bdaf-5cfabb92a180/PDF-2.pdf?v=1678104579824"; // Replace with Actual Brinker Dashboards URL
+
+      //const url2 = "https://pdf-lib.js.org/assets/with_large_page_count.pdf";
+
+      const secondDonorPdfBytes = await fetch(url2).then((res) =>
+
+        res.arrayBuffer()
+
+      );
+
+
+
+      // Fetch third existing PDF document
+
+      const url3 = "https://cdn.glitch.global/d4a69817-dc25-44d7-bdaf-5cfabb92a180/PDF-3.pdf?v=1678104579824"; // Replace with Actual Brinker Dashboards URL
+
+      //const url3 = "https://cdn.glitch.global/d4a69817-dc25-44d7-bdaf-5cfabb92a180/PDF-3.pdf?v=1678104579824";
+
+      const thirdDonorPdfBytes = await fetch(url3).then((res) =>
+
+        res.arrayBuffer()
+
+      );
+
+
+
+      // Load a PDFDocument from each of the existing PDFs
+
+      const firstDonorPdfDoc = await PDFDocument.load(firstDonorPdfBytes);
+
+      const secondDonorPdfDoc = await PDFDocument.load(secondDonorPdfBytes);
+
+      const thirdDonorPdfDoc = await PDFDocument.load(thirdDonorPdfBytes);
+
+
+
+      // Create a new PDFDocument
+
+      const pdfDoc = await PDFDocument.create();
+
+
+
+      // Copy the 1st page from the first donor document, and
+
+      // the 743rd page from the second donor document
+
+      const [firstDonorPage] = await pdfDoc.copyPages(firstDonorPdfDoc, [0]);
+
+      const [secondDonorPage] = await pdfDoc.copyPages(secondDonorPdfDoc, [0]);
+
+      const [thirdDonorPage] = await pdfDoc.copyPages(thirdDonorPdfDoc, [0]);
+
+
+
+      // Add the first copied page
+
+      pdfDoc.addPage(firstDonorPage);
+
+      pdfDoc.addPage(secondDonorPage);
+
+      pdfDoc.addPage(thirdDonorPage);
+
+
+
+      // Insert the second copied page to index 0, so it will be the
+
+      // first page in `pdfDoc`
+
+      //pdfDoc.insertPage(1, thirdDonorPage);
+
+      // Serialize the PDFDocument to bytes (a Uint8Array)
+
+      const pdfBytes = await pdfDoc.save();
+
+
+
+      // Trigger the browser to download the PDF document
+
+      download(pdfBytes, "compiledPDF.pdf", "application/pdf");
+
+    }
+
+  </script>
+
+</html>
+
